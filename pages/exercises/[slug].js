@@ -86,7 +86,7 @@ export default function Post({exercise}) {
 
   //State
   const [state, setState] = useState({right: false});
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([{title: "Bench Press", slug: "bench-press"}]);
 
   //Fetch cart data and set it
   useEffect(() => {
@@ -208,14 +208,15 @@ export default function Post({exercise}) {
           <div className={styles.eTitleBox}>
             <h1 className={styles.eTitle}>About The {exercise.title}</h1>
           </div>
-          <div className={styles.eButtonBox}>
+          {(cart)
+          ? <div className={styles.eButtonBox}>
               {!(cart.filter(function(e) { return e.title === exercise.title; }).length > 0) ? (
               <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.slug})}>Save Exercise</Button>
               ) : (
                 <Button className={styles.savedButton}>Saved</Button>
               )}
             </div>
-          
+          : <div></div>}
         </div>
         <p className={styles.content}>{exercise.content}</p>
         <h1 className={styles.dTitle}>Discussion</h1>
