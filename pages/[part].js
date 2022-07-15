@@ -101,17 +101,14 @@ export default function Part({ exercises, part }) {
 
   //Fetch cart data and set it
   useEffect(() => {
-    console.log(getFromStorage("cart"));
-    if (getFromStorage("cart") == null) {
-      setToStorage("cart", JSON.stringify([{title: "Bench Press", slug: "bench-press"}]));
-      setCart([{title: "Bench Press", slug: "bench-press"}]);
-      console.log("First time loading cart. Cart initialized to just bench press");
-    } else {
-      console.log(JSON.parse(getFromStorage("cart")));
-      setCart(JSON.parse(getFromStorage("cart")))
+      const cart = localStorage.getItem("cart");
+      console.log("Printing " + cart);
+    
+      console.log(JSON.parse(cart));
+      setToStorage("cart", JSON.stringify(JSON.parse(cart)));
+      setCart(JSON.parse(cart))
       console.log("cart initialized to previous data");
-    }
-  }, []);
+  }, [cart]);
 
 
   //Add a workout to cart
