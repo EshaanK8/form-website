@@ -91,7 +91,6 @@ export default function Post({exercise}) {
   //Fetch cart data and set it
   useEffect(() => {
     const cart = window.localStorage.getItem("cart");
-    console.log("Printing " + cart);
     setToStorage("cart", JSON.stringify(JSON.parse(cart)));
     setCart(JSON.parse(cart))
   }, []);

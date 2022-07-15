@@ -52,12 +52,9 @@ export default function Home({ bodyParts }) {
 
   //Fetch cart data
   useEffect(() => {
-    console.log(getFromStorage("cart"));
-    if (getFromStorage("cart") == null) {
+    const cart = window.localStorage.getItem("cart");
+    if (cart == null) {
       setToStorage("cart", JSON.stringify([{title: "Bench Press", slug: "bench-press"}]));
-      console.log("First time loading cart. Cart initialized to just bench press");
-    } else {
-      console.log("Cart initialized to previous data " + getFromStorage("cart"));
     }
   }, []);
 
