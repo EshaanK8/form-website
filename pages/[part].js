@@ -97,18 +97,15 @@ export default function Part({ exercises, part }) {
 
   //State
   const [state, setState] = useState({right: false});
-  const [cart, setCart] = useState([{title: "Bench Press", slug: "bench-press"}]);
+  const [cart, setCart] = useState([]);
 
   //Fetch cart data and set it
   useEffect(() => {
-      const cart = localStorage.getItem("cart");
+      const cart = window.localStorage.getItem("cart");
       console.log("Printing " + cart);
-    
-      console.log(JSON.parse(cart));
       setToStorage("cart", JSON.stringify(JSON.parse(cart)));
       setCart(JSON.parse(cart))
-      console.log("cart initialized to previous data");
-  }, [cart]);
+  }, []);
 
 
   //Add a workout to cart

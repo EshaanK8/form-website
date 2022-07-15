@@ -86,18 +86,14 @@ export default function Post({exercise}) {
 
   //State
   const [state, setState] = useState({right: false});
-  const [cart, setCart] = useState([{title: "Bench Press", slug: "bench-press"}]);
+  const [cart, setCart] = useState([]);
 
   //Fetch cart data and set it
   useEffect(() => {
-    if (getFromStorage("cart") == null) {
-      setToStorage("cart", JSON.stringify([{title: "Bench Press", slug: "bench-press"}]));
-      setCart([{title: "Bench Press", slug: "bench-press"}]);
-      console.log("First time loading cart. Cart initialized to just bench press");
-    } else {
-      setCart(JSON.parse(getFromStorage("cart")))
-      console.log("cart initialized to previous data");
-    }
+    const cart = window.localStorage.getItem("cart");
+    console.log("Printing " + cart);
+    setToStorage("cart", JSON.stringify(JSON.parse(cart)));
+    setCart(JSON.parse(cart))
   }, []);
 
 
