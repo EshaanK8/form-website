@@ -1,0 +1,53 @@
+.card {
+  margin-top: 5rem;
+  overflow: hidden;
+  box-shadow: 15px 20px 40px rgba(216, 211, 211, 0.4);
+}
+.card h2 {
+  padding: 0.5rem 0rem;
+}
+.card h3 {
+  font-size: 1rem;
+}
+
+.imgContainer img {
+    height: 25vh;
+    width: 100%;
+}
+
+.card img:hover {
+  opacity: 0.5;
+}
+
+.card img {
+  object-fit: contain;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0rem;
+}
+
+.text {
+  padding: 1rem 3rem;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    margin: 0rem 2rem;
+  }
+}
+
+.name {
+  color: #394F8A;
+  font-family: Inter;
+  font-size: 1.5em;
+  font-weight: 500;
+}

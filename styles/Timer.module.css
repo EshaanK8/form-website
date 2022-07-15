@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap');
+
+.app {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    background-color: #152684;
+  }
+  
+  .time {
+    font-size: 3rem;
+    color: white;
+    font-family: Inter;
+    font-weight: 500;
+  }
+
+  .sButton {
+    background-color:#9ef4a5;
+    color: #394F8A;
+    font-weight: 500;
+    font-size: 0.6em;
+    border-radius: 0;
+    margin-right: 1%;
+    margin-top: 2%;
+    padding-left:2%;
+    padding-right:2%;
+    margin-bottom: 5%;
+  }
+
+  .rButton {
+    background-color:#EAD6CD;
+    color: #394F8A;
+    font-weight: 500;
+    font-size: 0.6em;
+    border-radius: 0;
+    margin-left: 1%;
+    margin-top: 2%;
+    padding-left:2%;
+    padding-right:2%;
+    margin-bottom: 5%;
+  }
+  
+  .button {
+    padding: .6rem 1.5rem;
+    margin: .4rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: .8rem;
+    border-style: groove;
+  }
+  
+  .button:focus {
+    outline-width: 0;
+  }
+  
+  .button-primary:hover {
+    background-color: #2641d4;
+    border: 1px solid #1b1f2b;
+  }
+  
+  .button-primary-active {
+    background-color: #3151ff;
+    border: 1px solid #152684;
+    color: white;
+  }
+  
+  .button-primary-inactive {
+    background-color: #3151ff;
+    border: 1px solid #152684;
+    color: white;
+  }
+
+  .timeTitle {
+    font-size: 2rem;
+    padding: 2rem;
+    color: white;
+    font-family: Inter;
+    font-weight: 500;
+  }
+  

@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap');
+
+.title h1 {
+  color: rgb(39, 39, 39);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  font-size: 2rem;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-gap: 3rem;
+  margin: 0% 15%;
+}
+
+.topBar {
+    display:flex;
+    flex-direction: row;
+    width:100%;
+    align-items: center;
+    background-color: #4A5FC1;
+}
+
+.titleBox {
+    flex:12;
+    padding-left: 2%;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.buttonBox {
+    flex:1;
+    padding-left: 2%;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.iconBox {
+    flex:1;
+    text-align: center;
+    height: 100%;
+}
+
+.partIcon {
+  display: block;
+  min-height: 105px;
+  max-height:105px;
+  max-width:200px;
+}
+
+.title {
+    color: white;
+    font-size:2.5em;
+    padding-left: 1%;
+}
+
+.listIcon > path {
+    color:white;
+}
+
+.listBtn {
+    text-align: right;
+}
+
+.listItem {
+    color: #394F8A;
+    font-family: Inter;
+    font-size: 1em;
+    font-weight: 300;
+}
+
+.listBtnContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    align-items: stretch;
+}
+
+.listBtnNameContainer {
+    flex:8;
+    padding: 5%;
+}
+
+.listBtnDeleteContainer {
+    flex:1;
+}
+
+.deleteIcon > path {
+    color: grey;
+}
+
+.backIcon > path {
+    color: white;
+}
+
+.listTitle {
+    padding: 10%;
+    color: #394F8A;
+    font-family: Inter;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.contentBox {
+  padding-top: 2%;
+  padding-left: 8%;
+  padding-right: 8%;
+}
+
+.nameBox {
+  display:flex;
+}
+
+.eTitleBox {
+  flex:8;
+}
+
+.eButtonBox {
+  flex:2;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.eTitle {
+  color: #394F8A;
+  font-family: Inter;
+  font-size: 2em;
+  font-weight: 500;
+  margin-top: 4%;
+}
+
+.dTitle {
+  color: #394F8A;
+  font-family: Inter;
+  font-size: 2em;
+  font-weight: 500;
+  margin-bottom: 3%;
+}
+
+.content {
+  color: rgb(82, 85, 96);
+  font-family: Inter;
+  font-size: 1.5em;
+  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom:5%;
+}
+
+.saveButton {
+  background-color:#EAD6CD;
+  color: #394F8A;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-weight: 200;
+  font-size: 1em;
+  border-radius: 0;
+}
+
+.savedButton {
+  background-color:#9ef4a5;
+  color: #394F8A;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-weight: 200;
+  font-size: 1em;
+  border-radius: 0;
+}
