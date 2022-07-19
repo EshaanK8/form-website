@@ -137,7 +137,7 @@ export default function Home({ bodyParts }) {
                           {bodyParts.map((post, index) => (
                               <BPCard
                                 title={post.localizations[0].title}
-                                coverPhoto={post.localizations[0].coverPhoto}
+                                coverPhoto={post.coverPhoto}
                                 key={post.localizations[0].id}
                                 slug={post.localizations[0].slug}
                                 color={alternatingColor[index]}
