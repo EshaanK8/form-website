@@ -65,7 +65,7 @@ const Timer = () => {
                 {isActive ? 'Pause' : 'Commencer'}
                 </Button>
                 <Button className={styles.rButton} onClick={reset}>
-                Reset
+                  Réinitialiser
                 </Button>
             </div>
           </div>

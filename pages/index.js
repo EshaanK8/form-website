@@ -94,42 +94,62 @@ export default function Home({ bodyParts }) {
           <ToggleButton value="fr">FR</ToggleButton>
         </ToggleButtonGroup>
       </div>
-      <div className={styles.landingPage}>
-        <img className={styles.logo} src="/logo.svg"/>
-        <h1 className={styles.t1}>Train Smarter <span className={styles.t2}>Not Harder</span></h1>
-      </div>
-      <div>
-        <div className={styles.exploreTitleContainer}>
-          <h1 className={styles.exploreTitle}>Explore Our Workouts</h1>
-        </div>
-        {(bodyParts)
-          ? <div className={styles.partContainer}>
-            {(alignment == "en")
-              ? bodyParts.map((post, index) => (
-                  <BPCard
-                    title={post.title}
-                    coverPhoto={post.coverPhoto}
-                    key={post.id}
-                    slug={post.slug}
-                    color={alternatingColor[index]}
-                  />
-                ))
-              : bodyParts.map((post, index) => (
-                <BPCard
-                  title={post.localizations[0].title}
-                  coverPhoto={post.coverPhoto}
-                  key={post.localizations[0].id}
-                  slug={post.localizations[0].slug}
-                  color={alternatingColor[index]}
-                />
-              ))}
 
-
-              
-            </div>
-          : <div></div>
-        }
-      </div>
+      {(alignment == "en")
+              ?
+                <div>
+                  <div className={styles.landingPage}>
+                    <img className={styles.logo} src="/logo.svg"/>
+                    <h1 className={styles.t1}>Train Smarter <span className={styles.t2}>Not Harder</span></h1>
+                  </div>
+                  <div>
+                    <div className={styles.exploreTitleContainer}>
+                      <h1 className={styles.exploreTitle}>Explore Our Workouts</h1>
+                    </div>
+                    {(bodyParts)
+                      ? <div className={styles.partContainer}>
+                          {bodyParts.map((post, index) => (
+                              <BPCard
+                                title={post.title}
+                                coverPhoto={post.coverPhoto}
+                                key={post.id}
+                                slug={post.slug}
+                                color={alternatingColor[index]}
+                              />
+                          ))}
+                        </div>
+                      : <div></div>
+                    }
+                  </div>
+                </div>
+              :
+                <div>
+                  <div className={styles.landingPage}>
+                    <img className={styles.logo} src="/logo.svg"/>
+                    <h1 className={styles.t1}>Entraînez-vous plus intelligemment <span className={styles.t2}>Pas Plus Fort</span></h1>
+                  </div>
+                  <div>
+                    <div className={styles.exploreTitleContainer}>
+                      <h1 className={styles.exploreTitle}>Découvrez Nos Entraînements</h1>
+                    </div>
+                    {(bodyParts)
+                      ? <div className={styles.partContainer}>
+                          {bodyParts.map((post, index) => (
+                              <BPCard
+                                title={post.localizations[0].title}
+                                coverPhoto={post.localizations[0].coverPhoto}
+                                key={post.localizations[0].id}
+                                slug={post.localizations[0].slug}
+                                color={alternatingColor[index]}
+                              />
+                          ))}
+                        </div>
+                      : <div></div>
+                    }
+                  </div>
+                </div>
+      }
+      
     </div>
   );
 }

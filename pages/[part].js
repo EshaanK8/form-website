@@ -167,28 +167,64 @@ export default function Part({ exercises, part }) {
       onClick={toggleDrawer(anchor, true)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <h1 className={styles.listTitle}>Saved Exercises</h1>
-      <Divider />
-      {(cart) 
-        ? <List>
-            {cart.map((exercise) => (
-              <ListItem key={exercise.slug} disablePadding>
-                  <ListItemButton className={styles.listBtnContainer}>
-                      <div className={styles.listBtnNameContainer}>
-                        <Link href={`/exercises/${exercise.slug}`}>
-                          <h1 className={styles.listItem}>{exercise.title}</h1>
-                        </Link>
-                      </div>
-                      <div className={styles.listBtnDeleteContainer}>
-                        <IconButton aria-label="remove exercise" onClick={() => removeFromCart(exercise)}>
-                          <DeleteIcon className={styles.deleteIcon} sx={{ fontSize: "2rem" }}/>
-                        </IconButton>
-                      </div>
-                  </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        : <div></div>      
+      {
+        (alignment == "en")
+          ? //ENGLISH
+            <div>
+              <h1 className={styles.listTitle}>Saved Exercises</h1>
+              <Divider />
+              {(cart) 
+                ? <List>
+                    {cart.map((exercise) => (
+                          <div>
+                            <ListItem key={exercise.slug} disablePadding>
+                              <ListItemButton className={styles.listBtnContainer}>
+                                  <div className={styles.listBtnNameContainer}>
+                                    <Link href={`/exercises/${exercise.slug}`}>
+                                      <h1 className={styles.listItem}>{exercise.title}</h1>
+                                    </Link>
+                                  </div>
+                                  <div className={styles.listBtnDeleteContainer}>
+                                    <IconButton aria-label="remove exercise" onClick={() => removeFromCart(exercise)}>
+                                      <DeleteIcon className={styles.deleteIcon} sx={{ fontSize: "2rem" }}/>
+                                    </IconButton>
+                                  </div>
+                              </ListItemButton>
+                            </ListItem>
+                          </div>
+                    ))}
+                  </List>
+                : <div></div>
+              }
+            </div>
+          : //FRENCH
+            <div>
+              <h1 className={styles.listTitle}>Exercices Enregistrés</h1>
+              <Divider />
+              {(cart) 
+                ? <List>
+                    {cart.map((exercise) => (
+                          <div>
+                            <ListItem key={exercise.slug} disablePadding>
+                              <ListItemButton className={styles.listBtnContainer}>
+                                  <div className={styles.listBtnNameContainer}>
+                                    <Link href={`/exercises/${exercise.slug}`}>
+                                      <h1 className={styles.listItem}>{exercise.localizations[0].title}</h1>
+                                    </Link>
+                                  </div>
+                                  <div className={styles.listBtnDeleteContainer}>
+                                    <IconButton aria-label="remove exercise" onClick={() => removeFromCart(exercise)}>
+                                      <DeleteIcon className={styles.deleteIcon} sx={{ fontSize: "2rem" }}/>
+                                    </IconButton>
+                                  </div>
+                              </ListItemButton>
+                            </ListItem>
+                          </div>
+                    ))}
+                  </List>
+                : <div></div>
+              }
+            </div>
       }
     </Box>
   );

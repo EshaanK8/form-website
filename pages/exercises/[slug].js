@@ -119,7 +119,7 @@ export default function Post({exercise}) {
  //Add a workout to cart
  const addToCart = (product) => {
   //Only add if it is not already in the cart
-  if (!(cart.filter(function(e) { return e.title === product.title; }).length > 0)) {
+  if (!(cart.filter(function(e) { return e.id === product.id; }).length > 0)) {
     setToStorage('cart', JSON.stringify([...cart, product]));
     setCart([...cart, product]);
   }
@@ -159,28 +159,64 @@ export default function Post({exercise}) {
       onClick={toggleDrawer(anchor, true)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <h1 className={styles.listTitle}>Saved Exercises</h1>
-      <Divider />
-      {(cart) 
-        ? <List>
-            {cart.map((exercise) => (
-              <ListItem key={exercise.slug} disablePadding>
-                  <ListItemButton className={styles.listBtnContainer}>
-                      <div className={styles.listBtnNameContainer}>
-                        <Link href={`/exercises/${exercise.slug}`}>
-                          <h1 className={styles.listItem}>{exercise.title}</h1>
-                        </Link>
-                      </div>
-                      <div className={styles.listBtnDeleteContainer}>
-                        <IconButton aria-label="remove exercise" onClick={() => removeFromCart(exercise)}>
-                          <DeleteIcon className={styles.deleteIcon} sx={{ fontSize: "2rem" }}/>
-                        </IconButton>
-                      </div>
-                  </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        : <div></div>
+      {
+        (alignment == "en")
+          ? //ENGLISH
+            <div>
+              <h1 className={styles.listTitle}>Saved Exercises</h1>
+              <Divider />
+              {(cart) 
+                ? <List>
+                    {cart.map((exercise) => (
+                          <div>
+                            <ListItem key={exercise.slug} disablePadding>
+                              <ListItemButton className={styles.listBtnContainer}>
+                                  <div className={styles.listBtnNameContainer}>
+                                    <Link href={`/exercises/${exercise.slug}`}>
+                                      <h1 className={styles.listItem}>{exercise.title}</h1>
+                                    </Link>
+                                  </div>
+                                  <div className={styles.listBtnDeleteContainer}>
+                                    <IconButton aria-label="remove exercise" onClick={() => removeFromCart(exercise)}>
+                                      <DeleteIcon className={styles.deleteIcon} sx={{ fontSize: "2rem" }}/>
+                                    </IconButton>
+                                  </div>
+                              </ListItemButton>
+                            </ListItem>
+                          </div>
+                    ))}
+                  </List>
+                : <div></div>
+              }
+            </div>
+          : //FRENCH
+            <div>
+              <h1 className={styles.listTitle}>Exercices Enregistrés</h1>
+              <Divider />
+              {(cart) 
+                ? <List>
+                    {cart.map((exercise) => (
+                          <div>
+                            <ListItem key={exercise.slug} disablePadding>
+                              <ListItemButton className={styles.listBtnContainer}>
+                                  <div className={styles.listBtnNameContainer}>
+                                    <Link href={`/exercises/${exercise.slug}`}>
+                                      <h1 className={styles.listItem}>{exercise.localizations[0].title}</h1>
+                                    </Link>
+                                  </div>
+                                  <div className={styles.listBtnDeleteContainer}>
+                                    <IconButton aria-label="remove exercise" onClick={() => removeFromCart(exercise)}>
+                                      <DeleteIcon className={styles.deleteIcon} sx={{ fontSize: "2rem" }}/>
+                                    </IconButton>
+                                  </div>
+                              </ListItemButton>
+                            </ListItem>
+                          </div>
+                    ))}
+                  </List>
+                : <div></div>
+              }
+            </div>
       }
     </Box>
   );
@@ -201,71 +237,6 @@ export default function Post({exercise}) {
     <div className={styles.container}>
       {(alignment == "en") 
           ? //ENGLISH
-          <div>
-            <div className={styles.topBar}>
-              <div className={styles.titleBox}>
-                <Link href={`/${exercise.part}`}>
-                  <IconButton aria-label="remove exercise">
-                    <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
-                  </IconButton>
-                </Link>
-                <img src={`/${exercise.part}.png`} className={styles.partIcon}></img>
-                <h1 className={styles.title}>{`${capitalizeFirst(exercise.part)} / ${capitalizeFirst(exercise.title)}`}</h1>
-              </div>
-              <div className={styles.iconBox}>
-                {(['right']).map((anchor) => (
-                  <Fragment key={anchor}>
-                    <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
-                      <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
-                    </IconButton>
-                    <SwipeableDrawer
-                      anchor={anchor}
-                      open={state[anchor]}
-                      onClose={toggleDrawer(anchor, false)}
-                      onOpen={toggleDrawer(anchor, true)}
-                      >
-                      {list(anchor)}
-                    </SwipeableDrawer>
-                  </Fragment>
-                ))}
-              </div>
-              <div className={styles.toggleBox}>
-                <ToggleButtonGroup
-                  color="primary"
-                  value={alignment}
-                  exclusive
-                  onChange={handleChange}
-                >
-                  <ToggleButton value="en">EN</ToggleButton>
-                  <ToggleButton value="fr">FR</ToggleButton>
-                  </ToggleButtonGroup>
-              </div>
-            </div>
-            <main className={styles.contentBox}>
-              <YoutubeEmbed embedId={exercise.video} />
-              <div className={styles.nameBox}>
-                <div className={styles.eTitleBox}>
-                  <h1 className={styles.eTitle}>About The {exercise.title}</h1>
-                </div>
-                {(cart)
-                ? <div className={styles.eButtonBox}>
-                    {!(cart.filter(function(e) { return e.title === exercise.title; }).length > 0) ? (
-                    <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.slug})}>Save Exercise</Button>
-                    ) : (
-                      <Button className={styles.savedButton}>Saved</Button>
-                    )}
-                  </div>
-                : <div></div>}
-              </div>
-              <p className={styles.content}>{exercise.content}</p>
-              <h1 className={styles.dTitle}>Discussion</h1>
-            </main>
-            <Comments/>
-            <Timer/>
-          </div>
-
-          : //FRENCH
-          <div>
             <div>
               <div className={styles.topBar}>
                 <div className={styles.titleBox}>
@@ -275,7 +246,7 @@ export default function Post({exercise}) {
                     </IconButton>
                   </Link>
                   <img src={`/${exercise.part}.png`} className={styles.partIcon}></img>
-                  <h1 className={styles.title}>{`${capitalizeFirst(exercise.localizations[0].part)} / ${capitalizeFirst(exercise.localizations[0].title)}`}</h1>
+                  <h1 className={styles.title}>{`${capitalizeFirst(exercise.part)} / ${capitalizeFirst(exercise.title)}`}</h1>
                 </div>
                 <div className={styles.iconBox}>
                   {(['right']).map((anchor) => (
@@ -307,28 +278,93 @@ export default function Post({exercise}) {
                 </div>
               </div>
               <main className={styles.contentBox}>
-                <YoutubeEmbed embedId={exercise.localizations[0].video} />
+                <YoutubeEmbed embedId={exercise.video} />
                 <div className={styles.nameBox}>
                   <div className={styles.eTitleBox}>
-                    <h1 className={styles.eTitle}>About The {exercise.localizations[0].title}</h1>
+                    <h1 className={styles.eTitle}>About The {exercise.title}</h1>
                   </div>
                   {(cart)
                   ? <div className={styles.eButtonBox}>
-                      {!(cart.filter(function(e) { return e.title === exercise.title; }).length > 0) ? (
-                      <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.localizations[0].title, slug: exercise.localizations[0].slug})}>Save Exercise</Button>
+                      {!(cart.filter(function(e) { return e.id === exercise.id; }).length > 0) ? (
+                      <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.slug, id: exercise.id, localizations: exercise.localizations})}>Save Exercise</Button>
                       ) : (
                         <Button className={styles.savedButton}>Saved</Button>
                       )}
                     </div>
                   : <div></div>}
                 </div>
-                <p className={styles.content}>{exercise.localizations[0].content}</p>
+                <p className={styles.content}>{exercise.content}</p>
                 <h1 className={styles.dTitle}>Discussion</h1>
               </main>
               <Comments/>
               <Timer/>
             </div>
-          </div>
+
+          : //FRENCH
+            <div>
+              <div>
+                <div className={styles.topBar}>
+                  <div className={styles.titleBox}>
+                    <Link href={`/${exercise.part}`}>
+                      <IconButton aria-label="remove exercise">
+                        <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
+                      </IconButton>
+                    </Link>
+                    <img src={`/${exercise.part}.png`} className={styles.partIcon}></img>
+                    <h1 className={styles.title}>{`${capitalizeFirst(exercise.localizations[0].part)} / ${capitalizeFirst(exercise.localizations[0].title)}`}</h1>
+                  </div>
+                  <div className={styles.iconBox}>
+                    {(['right']).map((anchor) => (
+                      <Fragment key={anchor}>
+                        <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
+                          <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
+                        </IconButton>
+                        <SwipeableDrawer
+                          anchor={anchor}
+                          open={state[anchor]}
+                          onClose={toggleDrawer(anchor, false)}
+                          onOpen={toggleDrawer(anchor, true)}
+                          >
+                          {list(anchor)}
+                        </SwipeableDrawer>
+                      </Fragment>
+                    ))}
+                  </div>
+                  <div className={styles.toggleBox}>
+                    <ToggleButtonGroup
+                      color="primary"
+                      value={alignment}
+                      exclusive
+                      onChange={handleChange}
+                    >
+                      <ToggleButton value="en">EN</ToggleButton>
+                      <ToggleButton value="fr">FR</ToggleButton>
+                      </ToggleButtonGroup>
+                  </div>
+                </div>
+                <main className={styles.contentBox}>
+                  <YoutubeEmbed embedId={exercise.localizations[0].video} />
+                  <div className={styles.nameBox}>
+                    <div className={styles.eTitleBox}>
+                      <h1 className={styles.eTitle}>À propos de le {exercise.localizations[0].title}</h1>
+                    </div>
+                    {(cart)
+                    ? <div className={styles.eButtonBox}>
+                        {!(cart.filter(function(e) { return e.id === exercise.id; }).length > 0) ? (
+                        <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.localizations[0].slug, id: exercise.localizations[0].id, localizations: exercise.localizations})}>Enregistrer L'exercice</Button>
+                        ) : (
+                          <Button className={styles.savedButton}>Enregistré</Button>
+                        )}
+                      </div>
+                    : <div></div>}
+                  </div>
+                  <p className={styles.content}>{exercise.localizations[0].content}</p>
+                  <h1 className={styles.dTitle}>Discussion</h1>
+                </main>
+                <Comments/>
+                <Timer/>
+              </div>
+            </div>
       }
     </div>
   )
