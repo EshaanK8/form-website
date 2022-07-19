@@ -19,6 +19,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 
 //Components
@@ -29,24 +30,39 @@ import Card from "../components/Card";
 const graphcms = new GraphQLClient('https://api-ca-central-1.graphcms.com/v2/cl4g4ujw70ytc01z65xgxbgmm/master');
 
 const QUERY = gql `
-  {
-    exercises(first: 36) {
-      id, 
+{
+  exercises(first: 36, locales: [en]) {
+    id, 
+    title,
+    slug,
+    part,
+    content
+    coverPhoto {
+      url
+    }
+    localizations {
+      id,
       title,
       slug,
       part,
-      content
+      content,
       coverPhoto {
         url
       }
     }
   }
+}
 `
 
 const SLUGLIST = gql`
   {
-    bodyParts {
+    bodyParts(locales: [en]) {
       slug,
+      locale
+      localizations {
+        slug,
+        locale
+      }
     }
   }
 `;
@@ -83,11 +99,6 @@ let map = new Map([
 ]);
 
 export default function Part({ exercises, part }) {
-  const getFromStorage = (key) => {
-    if(typeof window !== 'undefined'){
-         window.localStorage.getItem(key)
-    }
-  }
 
   const setToStorage = (key,value) => {
     if(typeof window !== 'undefined'){
@@ -98,12 +109,18 @@ export default function Part({ exercises, part }) {
   //State
   const [state, setState] = useState({right: false});
   const [cart, setCart] = useState([{title: "Bench Press", slug: "bench-press"}]);
+  const [alignment, setAlignment] = React.useState('en');
 
-  //Fetch cart data and set it
+  //Fetch cart and language data and set it
   useEffect(() => {
       const cart = window.localStorage.getItem("cart");
+      const language = window.localStorage.getItem("language");
+
       setToStorage("cart", JSON.stringify(JSON.parse(cart)));
+      setToStorage("language", language);
+
       setCart(JSON.parse(cart))
+      setAlignment(language)
   }, []);
 
 
@@ -181,58 +198,148 @@ export default function Part({ exercises, part }) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  //Change Language
+  const handleChange = (event,newAlignment) => {
+    setAlignment(newAlignment);
+    setToStorage("language", newAlignment)
+  };
+
+  const toFrench = str => {
+    if (str == "chest") return "poitrine"
+    if (str == "legs") return "jambes"
+    if (str == "abs") return "abdos"
+    if (str == "arms") return "bras"
+    if (str == "shoulders") return "épaules"
+    if (str == "back") return "dos"
+
+  }
+
   
 
 
   //JSX
   return (
     <div className={styles.container}>
-      <div className={styles.topBar}>
-        <div className={styles.titleBox}>
-          <Link href="/">
-            <IconButton aria-label="remove exercise">
-              <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
-            </IconButton>
-          </Link>
-          <img src={`/${part}.png`} alt="" className={styles.partIcon}></img>
-          <h1 className={styles.title}>{capitalizeFirst(part)}</h1>
-        </div>
-        <div className={styles.iconBox}>
-          {(['right']).map((anchor) => (
-            <Fragment key={anchor}>
-              <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
-                <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
-              </IconButton>
-              <SwipeableDrawer
-                anchor={anchor}
-                open={state[anchor]}
-                onClose={toggleDrawer(anchor, false)}
-                onOpen={toggleDrawer(anchor, true)}
+      {(alignment == "en") 
+          ? //ENGLISH
+          <div>
+            <div className={styles.topBar}>
+              <div className={styles.titleBox}>
+                <Link href="/">
+                  <IconButton aria-label="remove exercise">
+                    <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
+                  </IconButton>
+                </Link>
+                <img src={`/${part}.png`} alt="" className={styles.partIcon}></img>
+                <h1 className={styles.title}>{capitalizeFirst(part)}</h1>
+              </div>
+              <div className={styles.iconBox}>
+                {(['right']).map((anchor) => (
+                  <Fragment key={anchor}>
+                    <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
+                      <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
+                    </IconButton>
+                    <SwipeableDrawer
+                      anchor={anchor}
+                      open={state[anchor]}
+                      onClose={toggleDrawer(anchor, false)}
+                      onOpen={toggleDrawer(anchor, true)}
+                      >
+                      {list(anchor)}
+                    </SwipeableDrawer>
+                  </Fragment>
+                ))}
+              </div>
+              <div className={styles.toggleBox}>
+                <ToggleButtonGroup
+                  color="primary"
+                  value={alignment}
+                  exclusive
+                  onChange={handleChange}
                 >
-                {list(anchor)}
-              </SwipeableDrawer>
-            </Fragment>
-          ))}
-        </div>
-      </div>
+                  <ToggleButton value="en">EN</ToggleButton>
+                  <ToggleButton value="fr">FR</ToggleButton>
+                </ToggleButtonGroup>
+              </div>
+            </div>
+            {(exercises.filter((item) => {return item.part == part}))        
+            ? <main className={styles.main}>
+                {exercises.filter((item) => {return item.part == part}).map((exercise) => (
+                  <Card
+                    title={exercise.title}
+                    author={exercise.author}
+                    coverPhoto={exercise.coverPhoto}
+                    key={exercise.id}
+                    datePublished={exercise.datePublished}
+                    slug={exercise.slug}
+                    part={exercise.part}
+                    addItem={addToCart}
+                    color={map.get(exercise.part)}
+                  />
+                ))}
+              </main>
+            : <div></div>     
+            }
+          </div>
 
-      {(exercises.filter((item) => {return item.part == part}))        
-        ? <main className={styles.main}>
-            {exercises.filter((item) => {return item.part == part}).map((exercise) => (
-              <Card
-                title={exercise.title}
-                author={exercise.author}
-                coverPhoto={exercise.coverPhoto}
-                key={exercise.id}
-                datePublished={exercise.datePublished}
-                slug={exercise.slug}
-                part={exercise.part}
-                addItem={addToCart}
-                color={map.get(exercise.part)}
-              />
-            ))}
-          </main>
-        : <div></div>     
+          : //FRENCH
+          <div>
+            <div className={styles.topBar}>
+              <div className={styles.titleBox}>
+                <Link href="/">
+                  <IconButton aria-label="remove exercise">
+                    <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
+                  </IconButton>
+                </Link>
+                <img src={`/${part}.png`} alt="" className={styles.partIcon}></img>
+                <h1 className={styles.title}>{capitalizeFirst(toFrench(part))}</h1>
+              </div>
+              <div className={styles.iconBox}>
+                {(['right']).map((anchor) => (
+                  <Fragment key={anchor}>
+                    <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
+                      <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
+                    </IconButton>
+                    <SwipeableDrawer
+                      anchor={anchor}
+                      open={state[anchor]}
+                      onClose={toggleDrawer(anchor, false)}
+                      onOpen={toggleDrawer(anchor, true)}
+                      >
+                      {list(anchor)}
+                    </SwipeableDrawer>
+                  </Fragment>
+                ))}
+              </div>
+              <div className={styles.toggleBox}>
+              <ToggleButtonGroup
+                color="primary"
+                value={alignment}
+                exclusive
+                onChange={handleChange}
+              >
+                <ToggleButton value="en">EN</ToggleButton>
+                <ToggleButton value="fr">FR</ToggleButton>
+              </ToggleButtonGroup>
+              </div>
+            </div>
+            {(exercises.filter((item) => {return item.part == part}))        
+            ? <main className={styles.main}>
+                {exercises.filter((item) => {return item.part == part}).map((exercise) => (
+                  <Card
+                    title={exercise.localizations[0].title}
+                    coverPhoto={exercise.localizations[0].coverPhoto}
+                    key={exercise.localizations[0].id}
+                    slug={exercise.localizations[0].slug}
+                    part={exercise.localizations[0].part}
+                    addItem={addToCart}
+                    color={map.get(exercise.part)}
+                  />
+                ))}
+              </main>
+            : <div></div>     
+            }
+          </div>
       }
     </div>
     

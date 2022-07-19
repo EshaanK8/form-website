@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 const Timer = () => {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [alignment, setAlignment] = React.useState('en');
 
   function toggle() {
     setIsActive(!isActive);
@@ -16,6 +17,9 @@ const Timer = () => {
   }
 
   useEffect(() => {
+    const language = window.localStorage.getItem("language");
+    setAlignment(language)
+
     let interval = null;
     if (isActive) {
       interval = setInterval(() => {
@@ -29,20 +33,44 @@ const Timer = () => {
 
   return (
     <div className={styles.app}>
-        <div>
+      {(alignment == "en")
+        ?
+          <div>
+            <div>
             <h1 className={styles.timeTitle}>Time Your Workout!</h1>
-        </div>
-        <div className={styles.time}>
-            {seconds}s
-        </div>
-        <div className={styles.row}>
-            <Button className={styles.sButton} onClick={toggle}>
-            {isActive ? 'Pause' : 'Start'}
-            </Button>
-            <Button className={styles.rButton} onClick={reset}>
-            Reset
-            </Button>
-        </div>
+            </div>
+            <div className={styles.time}>
+                {seconds}s
+            </div>
+            <div className={styles.row}>
+                <Button className={styles.sButton} onClick={toggle}>
+                {isActive ? 'Pause' : 'Start'}
+                </Button>
+                <Button className={styles.rButton} onClick={reset}>
+                Reset
+                </Button>
+            </div>
+          </div>
+
+        :
+          <div>
+            <div>
+            <h1 className={styles.timeTitle}>Chronométrez Votre Entraînement !</h1>
+            </div>
+            <div className={styles.time}>
+                {seconds}s
+            </div>
+            <div className={styles.row}>
+                <Button className={styles.sButton} onClick={toggle}>
+                {isActive ? 'Pause' : 'Commencer'}
+                </Button>
+                <Button className={styles.rButton} onClick={reset}>
+                Reset
+                </Button>
+            </div>
+          </div>
+      }
+        
     </div>
   );
 };

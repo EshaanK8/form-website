@@ -22,13 +22,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 
 const graphcms = new GraphQLClient('https://api-ca-central-1.graphcms.com/v2/cl4g4ujw70ytc01z65xgxbgmm/master');
 
 const QUERY = gql`
   query Exercise($slug: String!) {
-    exercise(where: { slug: $slug }) {
+    exercise(locales: [en], where: { slug: $slug }) {
       id
       title
       slug
@@ -38,6 +39,18 @@ const QUERY = gql`
       coverPhoto {
         id
         url
+      }
+      localizations {
+        id
+        title
+        slug
+        video
+        part
+        content
+        coverPhoto {
+          id
+          url
+        }
       }
     }
   }
@@ -87,12 +100,19 @@ export default function Post({exercise}) {
   //State
   const [state, setState] = useState({right: false});
   const [cart, setCart] = useState([{title: "Bench Press", slug: "bench-press"}]);
+  const [alignment, setAlignment] = React.useState('en');
+
 
   //Fetch cart data and set it
   useEffect(() => {
     const cart = window.localStorage.getItem("cart");
+    const language = window.localStorage.getItem("language");
+
     setToStorage("cart", JSON.stringify(JSON.parse(cart)));
+    setToStorage("language", language);
+
     setCart(JSON.parse(cart))
+    setAlignment(language)
   }, []);
 
 
@@ -170,58 +190,146 @@ export default function Post({exercise}) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  //Change Language
+  const handleChange = (event,newAlignment) => {
+    setAlignment(newAlignment);
+    setToStorage("language", newAlignment)
+  };
+
   //JSX
   return (
     <div className={styles.container}>
-      <div className={styles.topBar}>
-        <div className={styles.titleBox}>
-          <Link href={`/${exercise.part}`}>
-            <IconButton aria-label="remove exercise">
-              <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
-            </IconButton>
-          </Link>
-          <img src={`/${exercise.part}.png`} className={styles.partIcon}></img>
-          <h1 className={styles.title}>{`${capitalizeFirst(exercise.part)} / ${capitalizeFirst(exercise.title)}`}</h1>
-        </div>
-        <div className={styles.iconBox}>
-          {(['right']).map((anchor) => (
-            <Fragment key={anchor}>
-              <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
-                <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
-              </IconButton>
-              <SwipeableDrawer
-                anchor={anchor}
-                open={state[anchor]}
-                onClose={toggleDrawer(anchor, false)}
-                onOpen={toggleDrawer(anchor, true)}
+      {(alignment == "en") 
+          ? //ENGLISH
+          <div>
+            <div className={styles.topBar}>
+              <div className={styles.titleBox}>
+                <Link href={`/${exercise.part}`}>
+                  <IconButton aria-label="remove exercise">
+                    <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
+                  </IconButton>
+                </Link>
+                <img src={`/${exercise.part}.png`} className={styles.partIcon}></img>
+                <h1 className={styles.title}>{`${capitalizeFirst(exercise.part)} / ${capitalizeFirst(exercise.title)}`}</h1>
+              </div>
+              <div className={styles.iconBox}>
+                {(['right']).map((anchor) => (
+                  <Fragment key={anchor}>
+                    <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
+                      <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
+                    </IconButton>
+                    <SwipeableDrawer
+                      anchor={anchor}
+                      open={state[anchor]}
+                      onClose={toggleDrawer(anchor, false)}
+                      onOpen={toggleDrawer(anchor, true)}
+                      >
+                      {list(anchor)}
+                    </SwipeableDrawer>
+                  </Fragment>
+                ))}
+              </div>
+              <div className={styles.toggleBox}>
+                <ToggleButtonGroup
+                  color="primary"
+                  value={alignment}
+                  exclusive
+                  onChange={handleChange}
                 >
-                {list(anchor)}
-              </SwipeableDrawer>
-            </Fragment>
-          ))}
-        </div>
-      </div>
-      <main className={styles.contentBox}>
-        <YoutubeEmbed embedId={exercise.video} />
-        <div className={styles.nameBox}>
-          <div className={styles.eTitleBox}>
-            <h1 className={styles.eTitle}>About The {exercise.title}</h1>
-          </div>
-          {(cart)
-          ? <div className={styles.eButtonBox}>
-              {!(cart.filter(function(e) { return e.title === exercise.title; }).length > 0) ? (
-              <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.slug})}>Save Exercise</Button>
-              ) : (
-                <Button className={styles.savedButton}>Saved</Button>
-              )}
+                  <ToggleButton value="en">EN</ToggleButton>
+                  <ToggleButton value="fr">FR</ToggleButton>
+                  </ToggleButtonGroup>
+              </div>
             </div>
-          : <div></div>}
-        </div>
-        <p className={styles.content}>{exercise.content}</p>
-        <h1 className={styles.dTitle}>Discussion</h1>
-      </main>
-      <Comments/>
-      <Timer/>
+            <main className={styles.contentBox}>
+              <YoutubeEmbed embedId={exercise.video} />
+              <div className={styles.nameBox}>
+                <div className={styles.eTitleBox}>
+                  <h1 className={styles.eTitle}>About The {exercise.title}</h1>
+                </div>
+                {(cart)
+                ? <div className={styles.eButtonBox}>
+                    {!(cart.filter(function(e) { return e.title === exercise.title; }).length > 0) ? (
+                    <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.slug})}>Save Exercise</Button>
+                    ) : (
+                      <Button className={styles.savedButton}>Saved</Button>
+                    )}
+                  </div>
+                : <div></div>}
+              </div>
+              <p className={styles.content}>{exercise.content}</p>
+              <h1 className={styles.dTitle}>Discussion</h1>
+            </main>
+            <Comments/>
+            <Timer/>
+          </div>
+
+          : //FRENCH
+          <div>
+            <div>
+              <div className={styles.topBar}>
+                <div className={styles.titleBox}>
+                  <Link href={`/${exercise.part}`}>
+                    <IconButton aria-label="remove exercise">
+                      <ArrowBackIcon className={styles.backIcon} sx={{ fontSize: "3rem" }}/>
+                    </IconButton>
+                  </Link>
+                  <img src={`/${exercise.part}.png`} className={styles.partIcon}></img>
+                  <h1 className={styles.title}>{`${capitalizeFirst(exercise.localizations[0].part)} / ${capitalizeFirst(exercise.localizations[0].title)}`}</h1>
+                </div>
+                <div className={styles.iconBox}>
+                  {(['right']).map((anchor) => (
+                    <Fragment key={anchor}>
+                      <IconButton aria-label="add exercise" className={styles.listBtn} onClick={toggleDrawer(anchor, true)}>
+                        <FormatListBulletedIcon className={styles.listIcon} sx={{ fontSize: "3rem" }}/>
+                      </IconButton>
+                      <SwipeableDrawer
+                        anchor={anchor}
+                        open={state[anchor]}
+                        onClose={toggleDrawer(anchor, false)}
+                        onOpen={toggleDrawer(anchor, true)}
+                        >
+                        {list(anchor)}
+                      </SwipeableDrawer>
+                    </Fragment>
+                  ))}
+                </div>
+                <div className={styles.toggleBox}>
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={alignment}
+                    exclusive
+                    onChange={handleChange}
+                  >
+                    <ToggleButton value="en">EN</ToggleButton>
+                    <ToggleButton value="fr">FR</ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
+              </div>
+              <main className={styles.contentBox}>
+                <YoutubeEmbed embedId={exercise.localizations[0].video} />
+                <div className={styles.nameBox}>
+                  <div className={styles.eTitleBox}>
+                    <h1 className={styles.eTitle}>About The {exercise.localizations[0].title}</h1>
+                  </div>
+                  {(cart)
+                  ? <div className={styles.eButtonBox}>
+                      {!(cart.filter(function(e) { return e.title === exercise.title; }).length > 0) ? (
+                      <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.localizations[0].title, slug: exercise.localizations[0].slug})}>Save Exercise</Button>
+                      ) : (
+                        <Button className={styles.savedButton}>Saved</Button>
+                      )}
+                    </div>
+                  : <div></div>}
+                </div>
+                <p className={styles.content}>{exercise.localizations[0].content}</p>
+                <h1 className={styles.dTitle}>Discussion</h1>
+              </main>
+              <Comments/>
+              <Timer/>
+            </div>
+          </div>
+      }
     </div>
   )
 }
