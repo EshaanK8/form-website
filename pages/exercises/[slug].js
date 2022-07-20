@@ -244,8 +244,10 @@ export default function Post({exercise}) {
 
   //Change Language
   const handleChange = (event,newAlignment) => {
-    setAlignment(newAlignment);
-    setToStorage("language", newAlignment)
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+      setToStorage("language", newAlignment)
+    }
   };
 
   //JSX

@@ -95,8 +95,10 @@ export default function Home({ bodyParts }) {
   const [alignment, setAlignment] = React.useState('en');
 
   const handleChange = (event,newAlignment) => {
-    setAlignment(newAlignment);
-    setToStorage("language", newAlignment)
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+      setToStorage("language", newAlignment)
+    }
   };
 
   return (

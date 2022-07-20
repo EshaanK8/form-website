@@ -252,8 +252,10 @@ export default function Part({ exercises, part }) {
 
   //Change Language
   const handleChange = (event,newAlignment) => {
-    setAlignment(newAlignment);
-    setToStorage("language", newAlignment)
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+      setToStorage("language", newAlignment)
+    }
   };
 
   const toFrench = str => {
