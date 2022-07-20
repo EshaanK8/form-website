@@ -23,6 +23,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const graphcms = new GraphQLClient('https://api-ca-central-1.graphcms.com/v2/cl4g4ujw70ytc01z65xgxbgmm/master');
@@ -250,6 +251,23 @@ export default function Post({exercise}) {
     }
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#757ce8',
+        main: '#ffff',
+        dark: '#002884',
+        contrastText: '#fff',
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#f44336',
+        dark: '#ba000d',
+        contrastText: '#000',
+      },
+    },
+  });
+
   //JSX
   return (
     <div className={styles.container}>
@@ -284,15 +302,17 @@ export default function Post({exercise}) {
                   ))}
                 </div>
                 <div className={styles.toggleBox}>
-                  <ToggleButtonGroup
-                    color="primary"
-                    value={alignment}
-                    exclusive
-                    onChange={handleChange}
-                  >
-                    <ToggleButton value="en">EN</ToggleButton>
-                    <ToggleButton value="fr">FR</ToggleButton>
-                    </ToggleButtonGroup>
+                  <ThemeProvider theme={theme}>
+                    <ToggleButtonGroup
+                      color="primary"
+                      value={alignment}
+                      exclusive
+                      onChange={handleChange}
+                    >
+                      <ToggleButton value="en">EN</ToggleButton>
+                      <ToggleButton value="fr">FR</ToggleButton>
+                      </ToggleButtonGroup>
+                    </ThemeProvider>
                 </div>
               </div>
               <main className={styles.contentBox}>
@@ -349,15 +369,17 @@ export default function Post({exercise}) {
                     ))}
                   </div>
                   <div className={styles.toggleBox}>
-                    <ToggleButtonGroup
-                      color="primary"
-                      value={alignment}
-                      exclusive
-                      onChange={handleChange}
-                    >
-                      <ToggleButton value="en">EN</ToggleButton>
-                      <ToggleButton value="fr">FR</ToggleButton>
-                      </ToggleButtonGroup>
+                    <ThemeProvider theme={theme}>
+                      <ToggleButtonGroup
+                        color="primary"
+                        value={alignment}
+                        exclusive
+                        onChange={handleChange}
+                      >
+                        <ToggleButton value="en">EN</ToggleButton>
+                        <ToggleButton value="fr">FR</ToggleButton>
+                        </ToggleButtonGroup>
+                      </ThemeProvider>
                   </div>
                 </div>
                 <main className={styles.contentBox}>

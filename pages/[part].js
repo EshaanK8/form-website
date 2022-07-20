@@ -20,6 +20,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 
 //Components
@@ -268,6 +270,24 @@ export default function Part({ exercises, part }) {
 
   }
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#757ce8',
+        main: '#ffff',
+        dark: '#002884',
+        contrastText: '#fff',
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#f44336',
+        dark: '#ba000d',
+        contrastText: '#000',
+      },
+    },
+  });
+  
+
   
 
 
@@ -305,15 +325,17 @@ export default function Part({ exercises, part }) {
                 ))}
               </div>
               <div className={styles.toggleBox}>
-                <ToggleButtonGroup
-                  color="primary"
-                  value={alignment}
-                  exclusive
-                  onChange={handleChange}
-                >
-                  <ToggleButton value="en">EN</ToggleButton>
-                  <ToggleButton value="fr">FR</ToggleButton>
-                </ToggleButtonGroup>
+                <ThemeProvider theme={theme}>
+                  <ToggleButtonGroup
+                    color="primary"
+                    value={alignment}
+                    exclusive
+                    onChange={handleChange}
+                  >
+                    <ToggleButton value="en">EN</ToggleButton>
+                    <ToggleButton value="fr">FR</ToggleButton>
+                  </ToggleButtonGroup>
+                </ThemeProvider>
               </div>
             </div>
             {(exercises.filter((item) => {return item.part == part}))        
@@ -366,15 +388,17 @@ export default function Part({ exercises, part }) {
                 ))}
               </div>
               <div className={styles.toggleBox}>
-              <ToggleButtonGroup
-                color="primary"
-                value={alignment}
-                exclusive
-                onChange={handleChange}
-              >
-                <ToggleButton value="en">EN</ToggleButton>
-                <ToggleButton value="fr">FR</ToggleButton>
-              </ToggleButtonGroup>
+                <ThemeProvider theme={theme}>
+                  <ToggleButtonGroup
+                    color= "primary"
+                    value={alignment}
+                    exclusive
+                    onChange={handleChange}
+                  >
+                    <ToggleButton value="en">EN</ToggleButton>
+                    <ToggleButton value="fr">FR</ToggleButton>
+                  </ToggleButtonGroup>
+                </ThemeProvider>
               </div>
             </div>
             {(exercises.filter((item) => {return item.part == part}))        

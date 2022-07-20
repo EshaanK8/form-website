@@ -58,4 +58,6 @@
 .toggleBox {
   display: flex;
   justify-content: flex-end;
+  margin-right:2%;
+  margin-top:2%;
 }
