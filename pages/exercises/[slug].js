@@ -168,8 +168,8 @@ export default function Post({exercise}) {
               {(cart) 
                 ? <List>
                     {cart.map((exercise) => (
-                          <div>
-                            <ListItem key={exercise.slug} disablePadding>
+                          
+                            <ListItem key={exercise.id} disablePadding>
                               <ListItemButton className={styles.listBtnContainer}>
                                   <div className={styles.listBtnNameContainer}>
                                     <Link href={`/exercises/${exercise.slug}`}>
@@ -183,7 +183,7 @@ export default function Post({exercise}) {
                                   </div>
                               </ListItemButton>
                             </ListItem>
-                          </div>
+                          
                     ))}
                   </List>
                 : <div></div>
@@ -196,11 +196,11 @@ export default function Post({exercise}) {
               {(cart) 
                 ? <List>
                     {cart.map((exercise) => (
-                          <div>
-                            <ListItem key={exercise.slug} disablePadding>
+                          
+                            <ListItem key={exercise.id} disablePadding>
                               <ListItemButton className={styles.listBtnContainer}>
                                   <div className={styles.listBtnNameContainer}>
-                                    <Link href={`/exercises/${exercise.slug}`}>
+                                    <Link href={`/exercises/${exercise.localizations[0].slug}`}>
                                       <h1 className={styles.listItem}>{exercise.localizations[0].title}</h1>
                                     </Link>
                                   </div>
@@ -211,7 +211,7 @@ export default function Post({exercise}) {
                                   </div>
                               </ListItemButton>
                             </ListItem>
-                          </div>
+                          
                     ))}
                   </List>
                 : <div></div>
@@ -351,7 +351,7 @@ export default function Post({exercise}) {
                     {(cart)
                     ? <div className={styles.eButtonBox}>
                         {!(cart.filter(function(e) { return e.id === exercise.id; }).length > 0) ? (
-                        <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.localizations[0].slug, id: exercise.localizations[0].id, localizations: exercise.localizations})}>Enregistrer L'exercice</Button>
+                          <Button className={styles.saveButton} onClick={() => addToCart({title: exercise.title, slug: exercise.localizations[0].slug, id: exercise.localizations[0].id, localizations: exercise.localizations})}>{"Enregistrer L'exercice"}</Button>
                         ) : (
                           <Button className={styles.savedButton}>Enregistré</Button>
                         )}
