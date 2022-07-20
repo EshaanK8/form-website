@@ -108,8 +108,24 @@ export default function Part({ exercises, part }) {
 
   //State
   const [state, setState] = useState({right: false});
-  const [cart, setCart] = useState([{title: "Bench Press", slug: "bench-press"}]);
   const [alignment, setAlignment] = React.useState('en');
+  const [cart, setCart] = useState([{
+    title: "Bench Press", 
+    slug: "bench-press", 
+    id: "cl4g5iy0h19xn0du760zbt2st", 
+    localizations: [
+      {
+        "id": "cl4g5iy0h19xn0du760zbt2st",
+        "title": "Banc de Presse",
+        "slug": "bench-press",
+        "part": "poitrine",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "coverPhoto": {
+          "url": "https://media.graphassets.com/41MbYljzQfqbxuGlVOyR"
+        }
+      }
+    ]
+  }]);
 
   //Fetch cart and language data and set it
   useEffect(() => {
@@ -208,7 +224,7 @@ export default function Part({ exercises, part }) {
                             <ListItem key={exercise.id} disablePadding>
                               <ListItemButton className={styles.listBtnContainer}>
                                   <div className={styles.listBtnNameContainer}>
-                                    <Link href={`/exercises/${exercise.localizations[0].slug}`}>
+                                    <Link href={`/exercises/${exercise.slug}`}>
                                       <h1 className={styles.listItem}>{exercise.localizations[0].title}</h1>
                                     </Link>
                                   </div>
