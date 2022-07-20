@@ -42,6 +42,12 @@ const Timer = () => {
             <div className={styles.time}>
                 {seconds}s
             </div>
+            {
+              (seconds >= 1 && seconds <=2) ? <div><h1 className={styles.timeTitle}>Let's begin!</h1></div>
+                : (seconds >= 3 && seconds <=10) ? <div><h1 className={styles.timeTitle}>Keep going, you got this!</h1></div>
+                : (seconds >= 10) ? <div><h1 className={styles.timeTitle}>Don't let up!</h1></div>
+                : <div></div>
+            }
             <div className={styles.row}>
                 <Button className={styles.sButton} onClick={toggle}>
                 {isActive ? 'Pause' : 'Start'}
@@ -60,6 +66,12 @@ const Timer = () => {
             <div className={styles.time}>
                 {seconds}s
             </div>
+            {
+              (seconds >= 1 && seconds <=2) ? <div><h1 className={styles.timeTitle}>Commençons!</h1></div>
+                : (seconds >= 3 && seconds <=10) ? <div><h1 className={styles.timeTitle}>Continuez, vous avez compris!</h1></div>
+                : (seconds >= 10) ? <div><h1 className={styles.timeTitle}>Ne lâchez rien!</h1></div>
+                : <div></div>
+            }
             <div className={styles.row}>
                 <Button className={styles.sButton} onClick={toggle}>
                 {isActive ? 'Pause' : 'Commencer'}
